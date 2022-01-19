@@ -10,7 +10,7 @@ Original depracated project: https://necoro.dev/portato/
 
 ## Now what?
 
-So, I'll take the request and have Portato back in the grips of Gentoo users hopefully mid-to-late 2022. 
+So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.**
 
 ## Screenshots
 
