@@ -69,14 +69,13 @@ class DependencyTree(object):
 
     def add_flag(self, flag):
 
-        return self.flags[flag]  # it's a defaultdict
+        return self.flags[flag]
 
     def parse(self, deps):
 
         it = iter(deps)
         for dep in it:
 
-            # use
             if dep[-1] == "?":
                 ntree = self.add_flag(dep[:-1])
                 n = next(it)
@@ -84,19 +83,16 @@ class DependencyTree(object):
                     n = [n]
                 ntree.parse(n)
 
-            # or
             elif dep == "||":
-                n = next(it)  # skip
+                n = next(it)
                 if not hasattr(n, "__iter__"):
                     n = [n]
 
                 self.add_or().parse(n)
 
-            # sub
             elif isinstance(dep, list):
                 self.add_sub().parse(dep)
 
-            # normal
             else:
                 self.add(dep)
 
