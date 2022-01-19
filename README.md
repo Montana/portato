@@ -2,12 +2,33 @@
 
 
 Portato is a GUI for the package manager of Gentoo - Portage. Shoutout to @Necoro, the original creator of Portato.
+Original depracated project: https://necoro.dev/portato/.
 
 ## Why? 
 
 The author has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again."
 
-Original depracated project: https://necoro.dev/portato/
+Before you install this, make sure you view your `environment variables` via:
+
+```bash
+emerge --info --verbose
+```
+
+Make sure your new locations are set:
+
+```bash
+repo_basedir="/var/db/repos"
+repo_name="gentoo"
+distdir="/var/cache/distfiles"
+portdir="/var/db/repos/gentoo"
+target_distdir="/var/cache/distfiles"
+target_pkgdir="/var/cache/binpkgs"
+```
+Then run:
+
+```bash
+emerge --depclean
+```
 
 ## Now what?
 
