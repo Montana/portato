@@ -4,6 +4,8 @@
 Portato is a GUI for the package manager of Gentoo - Portage. Shoutout to @Necoro, the original creator of Portato.
 Original depracated project: https://necoro.dev/portato/.
 
+NB: _Current instructions are only good for when this version (v2022) is done and ready for deployment_.
+
 ## Why? 
 
 The author has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again."
@@ -30,6 +32,8 @@ Then run:
 emerge --depclean
 ```
 
+From this point onward, Portage might mention that certain updates are recommended to be executed. This is because system packages installed through the stage file might have newer versions available; Portage is now aware of new packages because of the repository snapshot. Package updates can be safely ignored for now; updates can be delayed until after the Gentoo installation has finished.
+
 ## Now what?
 
 So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.**
@@ -42,6 +46,7 @@ So, I'll take the request and have Portato back in the grips of Gentoo users hop
 * Refactor existing code that can be salvaged to speed this along.
 * Reorganize `imports`, and make a `requirements.txt`. 
 * Symlink Portage with this version of Portato, (v2022). 
+* Keep adding instructions as I go.
 
 ## Screenshots
 
