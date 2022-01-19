@@ -2,11 +2,11 @@
 
 Portato is a GUI for the package manager of Gentoo - Portage. 
 
-Original: https://necoro.dev/portato/
-
 ## Why? 
 
 The author has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again."
+
+Original depracated project: https://necoro.dev/portato/
 
 ## Now what?
 
