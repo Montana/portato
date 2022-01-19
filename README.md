@@ -36,7 +36,31 @@ From this point onward, Portage might mention that certain updates are recommend
 
 ## Now what?
 
-So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.**
+So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.** You'll see under `REVISION` it says `2022`. I'm calling this `v2022` unless the author wants it called something else.
+
+```python
+ROOT_DIR = ""
+DATA_DIR = "./"
+
+ICON_DIR = pjoin(ROOT_DIR, DATA_DIR, "icons/")
+APP_ICON = pjoin(ICON_DIR, "portato-icon.png")
+
+APP = "portato"
+VERSION = "9999"
+HOME = os.environ["HOME"]
+
+CONFIG_DIR = pjoin(ROOT_DIR, "etc/")
+CONFIG_LOCATION = pjoin(CONFIG_DIR, "portato.cfg")
+SESSION_DIR = pjoin(os.environ["HOME"], ".portato")
+
+LOCALE_DIR = "i18n/"
+PLUGIN_DIR = pjoin(ROOT_DIR, DATA_DIR, "plugins/")
+SETTINGS_DIR = pjoin(HOME, "." + APP)
+TEMPLATE_DIR = "portato/gui/templates/"
+
+REPOURI = "git://github.com/Montana/portato.git"
+REVISION = "2022"
+```
 
 ## TODO
 
