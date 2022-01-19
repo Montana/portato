@@ -162,7 +162,8 @@ class Package(_Package):
         raise NotImplementedError
 
     def get_masking_reason(self):
-        """masking_method"""
+        
+        raise NotImplementedError
 
     def get_iuse_flags(self, installed=False, removeForced=True):
 
