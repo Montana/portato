@@ -171,7 +171,6 @@ class Session(object):
     def check_version(self, vers):
         pass
 
-
 class SectionDict(DictMixin):
 
     def __init__(self, session, section):
