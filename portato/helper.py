@@ -12,7 +12,6 @@ def N_(s):
 
 
 def get_runsystem():
-    # check for sabayon first, as sabayon also has the gentoo release
     for sp in ("/etc/sabayon-release", "/etc/sabayon-edition"):
         if os.path.exists(sp):
             with open(sp) as r:
