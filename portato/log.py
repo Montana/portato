@@ -103,5 +103,4 @@ def showwarnings(msg, cat, filename, lineno, file=None, line=None):
     )
     logging.getLogger("portatoLogger").handle(record)
 
-
 warnings.showwarning = showwarnings
