@@ -12,6 +12,14 @@ Original depracated project: https://necoro.dev/portato/
 
 So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.**
 
+## TODO
+
+* Update all Python to Python 3.9.
+* Making sure it works with current development of Gentoo.
+* Update the Portato GUI.
+* Refactor existing code that can be salvaged to speed this along.
+* Reorganize `imports`, and make a `requirements.txt`. 
+
 ## Screenshots
 
 ![image](https://user-images.githubusercontent.com/20936398/150138840-95f019b7-db0a-4bfe-bfb7-05eb01c2f604.png)
