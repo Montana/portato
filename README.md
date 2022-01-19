@@ -1,5 +1,6 @@
 ![64_64](https://user-images.githubusercontent.com/20936398/150125896-e8e94095-c383-40c6-a1e0-1729fce19612.png) **Portato**
 
+
 Portato is a GUI for the package manager of Gentoo - Portage. Shoutout to @Necoro, the original creator of Portato.
 
 ## Why? 
@@ -19,6 +20,7 @@ So, I'll take the request and have Portato back in the grips of Gentoo users hop
 * Update the Portato GUI.
 * Refactor existing code that can be salvaged to speed this along.
 * Reorganize `imports`, and make a `requirements.txt`. 
+* Symlink Portage with this version of Portato, (v2022). 
 
 ## Screenshots
 
