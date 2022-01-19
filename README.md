@@ -36,9 +36,9 @@ From this point onward, Portage might mention that certain updates are recommend
 
 ## Now what?
 
-So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.** You'll see under `REVISION` it says `2022`. I'm calling this `v2022` unless the author wants it called something else.
+So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.** You'll see under `REVISION` it says `2022`. I'm calling this `v2022` unless the author wants it called something else:
 
-```python
+```python3
 ROOT_DIR = ""
 DATA_DIR = "./"
 
