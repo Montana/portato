@@ -11,7 +11,6 @@ from .odict import OrderedDict
 NoSuchThing = (NoSectionError, NoOptionError)
 sessionlist = []
 
-
 class Session(object):
 
     VERSION = 1
