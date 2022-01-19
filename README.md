@@ -8,7 +8,7 @@ NB: _Current instructions are only good for when this version (v2022) is done an
 
 ## Why? 
 
-The author @Necoro aka René Neumann, has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again."
+The original author of Portato, @Necoro aka René Neumann, has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again."
 
 Before you install this, make sure you view your `environment variables` via:
 
