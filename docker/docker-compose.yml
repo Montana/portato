@@ -1,0 +1,15 @@
+services:
+  portato:
+    image: portato:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      DISPLAY: ":99"
+      VNC_PASSWORD: "portato"
+    ports:
+      - "5901:5901"
+    volumes:
+      - ../:/opt/portato
+    command: ["/usr/local/bin/headless.sh"]
+    user: "${UID:-1000}:${GID:-1000}"
