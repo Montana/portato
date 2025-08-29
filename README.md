@@ -10,68 +10,148 @@ NB: _Current instructions are only good for when this version (v2022) is done an
 
 The original author of Portato, @Necoro aka René Neumann, has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again." So I thought I'd be the person to get the new version of Portato going.
 
-Before you install this, make sure you view your `environment variables` via:
+Currently there's no plans of the original developer to bring it back on it's own. So I'm doing it. 
+
+<img width="544" height="559" alt="Screenshot 2025-08-29 at 5 27 26 AM" src="https://github.com/user-attachments/assets/72b8016a-4812-4d21-9025-d9e443dd4deb" />
+
+I've built a tiny, modernized **CLI** placeholder for the old Portato GUI that lets you:
+- show `emerge --info`
+- search packages (`emerge -s`)
+- list the world set
+- install/remove packages (shells out to `emerge`)
+
+This is **not** the full GTK GUI — it’s a stopgap that runs on Python 3 and current Gentoo,
+so you have *something usable today*. It’s structured so the GUI can be added back later
+(ideally via PyGObject/GTK3+).
+
+## Quick install (pip)
 
 ```bash
-emerge --info --verbose
+python3 -m pip install --user .
+# or editable for hacking:
+python3 -m pip install --user -e .
 ```
 
-Make sure your new locations are set:
+Run it:
 
 ```bash
-repo_basedir="/var/db/repos"
-repo_name="gentoo"
-distdir="/var/cache/distfiles"
-portdir="/var/db/repos/gentoo"
-target_distdir="/var/cache/distfiles"
-target_pkgdir="/var/cache/binpkgs"
+portato --help
+portato info
+portato search vim
+portato world
+# these require root/sudo, will shell out to emerge with -av for safety:
+portato install app-editors/vim
+portato remove app-editors/vim
 ```
-Then run:
 
+## Local overlay install (ebuild)
+
+Create a local overlay if you don't already have one (example path):
 ```bash
-emerge --depclean
+sudo mkdir -p /var/db/repos/localrepo
+sudo tee /etc/portage/repos.conf/localrepo.conf >/dev/null <<'EOF'
+[localrepo]
+location = /var/db/repos/localrepo
+masters = gentoo
+auto-sync = no
+EOF
 ```
 
-From this point onward, Portage might mention that certain updates are recommended to be executed. This is because system packages installed through the stage file might have newer versions available; Portage is now aware of new packages because of the repository snapshot. Package updates can be safely ignored for now; updates can be delayed until after the Gentoo installation has finished.
+Copy the ebuild & source tarball:
+```bash
+cd "/mnt/data/portato-almost-2025.08.29"
+# make a source tarball Gentoo can digest
+tar -C "/mnt/data/portato-almost-2025.08.29" -czf portato-almost-2025.08.29.tar.gz portato
 
-## Now what?
-
-So, I'll take the request and have Portato back in the grips of Gentoo users hopefully **mid-to-late 2022.** You'll see under `REVISION` it says `2022`. I'm calling this `v2022` unless the author wants it called something else:
-
-```python3
-ROOT_DIR = ""
-DATA_DIR = "./"
-
-ICON_DIR = pjoin(ROOT_DIR, DATA_DIR, "icons/")
-APP_ICON = pjoin(ICON_DIR, "portato-icon.png")
-
-APP = "portato"
-VERSION = "9999"
-HOME = os.environ["HOME"]
-
-CONFIG_DIR = pjoin(ROOT_DIR, "etc/")
-CONFIG_LOCATION = pjoin(CONFIG_DIR, "portato.cfg")
-SESSION_DIR = pjoin(os.environ["HOME"], ".portato")
-
-LOCALE_DIR = "i18n/"
-PLUGIN_DIR = pjoin(ROOT_DIR, DATA_DIR, "plugins/")
-SETTINGS_DIR = pjoin(HOME, "." + APP)
-TEMPLATE_DIR = "portato/gui/templates/"
-
-REPOURI = "git://github.com/Montana/portato.git"
-REVISION = "2022"
+sudo mkdir -p /var/db/repos/localrepo/app-portage/portato
+sudo cp overlay/app-portage/portato/portato-2025.08.29.ebuild /var/db/repos/localrepo/app-portage/portato/
+sudo cp portato-almost-2025.08.29.tar.gz /var/cache/distfiles/
 ```
 
-## TODO
+Generate Manifest & emerge:
+```bash
+cd /var/db/repos/localrepo/app-portage/portato
+sudo ebuild portato-2025.08.29.ebuild manifest
+sudo emerge -av app-portage/portato
+```
 
-* Update all Python to Python 3.9.
-* Making sure it works with current development of Gentoo.
-* Update the Portato GUI.
-* Refactor existing code that can be salvaged to speed this along.
-* Reorganize `imports`, and make a `requirements.txt`. 
-* Symlink Portage with this version of Portato, (v2022). 
-* Keep adding instructions as I go.
+## Next steps (GUI revival checklist)
 
-## Screenshots
+- Port the legacy GUI to **GTK3** using **PyGObject** (`dev-python/pygobject`).
+- Replace obsolete `pynotify` with `notify2` or GLib notifications via `gi.repository`.
+- Replace `optparse` with `argparse`.
+- Replace any `future_builtins`, `ConfigParser`, `UserDict` etc. with Python 3 equivalents.
+- Re-implement IPC as needed (GLib main loop or dbus/async queue). For now, the CLI runs without IPC.
+- Package with `pyproject.toml` and `distutils-r1` / `python-single-r1` in the ebuild.
+- Add a `portato.gui` package and wire it under the same CLI entrypoint.
 
-![image](https://user-images.githubusercontent.com/20936398/150138840-95f019b7-db0a-4bfe-bfb7-05eb01c2f604.png)
+---
+
+**Included:** a simple ebuild (`overlay/app-portage/portato/portato-2025.08.29.ebuild`) targeting Python 3.11/3.12.
+
+
+## GUI (GTK3) preview
+This bundle includes a very simple GTK3 GUI (PyGObject) with:
+- Search box (`emerge -s`) and results table
+- Buttons: **Pretend**, **Install**, **Remove**, **Info**
+- A **World** tab to show your world set
+- An **Output** pane that streams command output
+
+### Requirements
+```bash
+emerge -av dev-python/pygobject
+# (optional but helpful for privileged commands in a terminal)
+emerge -av x11-terms/xterm
+```
+
+### Run the GUI
+```bash
+portato gui
+```
+
+**Notes about privileged actions:** The GUI will try to run install/remove using:
+1) `pkexec emerge ...` if available, else
+2) `xterm -e sudo emerge ...` if available, else
+3) it will show the exact command so you can run it in a terminal.
+
+This avoids freezing the UI and keeps things safe and explicit.
+
+### Known Limitations
+- This is **not** the original Portato feature-parity yet (no queueing, advanced sets UI, etc.).
+- We currently shell out to `emerge` for search/install/remove. We can add Portage API calls next.
+- If `gentoolkit` is installed, future versions can use `equery` to enrich details.
+
+
+## Added Portato-like features
+- **Results table** with double-click to queue
+- **Queue** (install/remove), pretend and apply
+- **World** viewer and editor
+- **USE flags** writer to `/etc/portage/package.use/portato`
+- **News** viewer via `eselect news`
+- **Logs** viewer for `/var/log/emerge.log`
+
+This mirrors core workflows of legacy Portato while staying Python 3 + GTK3.
+
+
+## Extra features
+- **Emerge options**: --deep, --newuse, --oneshot, --keep-going, --jobs N
+- **Installed** tab (needs gentoolkit or portage-utils)
+- **Keywords / Mask** tab to write to `/etc/portage/package.accept_keywords/portato`, `/etc/portage/package.mask/portato`, `/etc/portage/package.unmask/portato`
+- **Repos** tab to sync overlays (`emerge --sync` or `emaint sync -a`)
+
+
+## New: Details sidebar (Portage-like)
+- Shows **Description, Homepage, License, Keywords** (Portage API if available; fallback to `equery meta` / `emerge -s`).
+- Displays **IUSE flags** as checkboxes with current enable/disable status (parsed from `emerge -pv`).
+- **Save** button writes your selections to `/etc/portage/package.use/portato` (overwrites prior line for that atom).
+- **Dependency Tree** button runs `emerge -ptv <atom>` into the Output pane.
+
+
+## Polished toward classic Portato
+- **Queue persistence** across sessions (`~/.config/portato/queue.json`).
+- **Settings persistence** for emerge options, jobs, API toggle (`~/.config/portato/settings.json`).
+- **Clickable Homepage** in Details (opens in browser).
+- **Graphical Dependency Tree** tab: parses `emerge -ptv` indentation into a tree view.
+
+## Author 
+Michael Mendy (c) 2025.
