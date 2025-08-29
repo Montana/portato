@@ -28,6 +28,11 @@ RUN groupadd -g ${GID} ${USERNAME} && \
 WORKDIR /opt/portato
 COPY . /opt/portato
 
+RUN emerge -qv dev-python/pip dev-python/setuptools dev-python/wheel || true && \
+    mkdir -p /etc/portage/package.use && \
+    echo 'x11-base/xorg-server xvfb' >> /etc/portage/package.use/portato && \
+    emerge -qv x11-base/xorg-server x11-misc/x11vnc || true
+
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install -e .
 
