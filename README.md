@@ -1,5 +1,6 @@
 ![64_64](https://user-images.githubusercontent.com/20936398/150125896-e8e94095-c383-40c6-a1e0-1729fce19612.png) **Portato**
 
+**My version now works and you can pull it from Docker Hub, it's been tested with Docker Scout as well, in conjunction with Docker Build Cloud.**
 
 Portato is a GUI for the package manager of Gentoo - Portage. Shoutout to @Necoro, the original creator of Portato.
 Original depracated project: https://necoro.dev/portato/.
