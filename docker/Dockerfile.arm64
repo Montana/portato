@@ -1,0 +1,72 @@
+FROM --platform=linux/arm64 ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    python3-gi \
+    python3-gi-cairo \
+    gir1.2-gtk-3.0 \
+    libgirepository1.0-dev \
+    libcairo2-dev \
+    pkg-config \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Gentoo tools (if available for Ubuntu ARM64)
+RUN apt-get update && apt-get install -y \
+    portage-utils \
+    || echo "Note: Some Gentoo tools may not be available on Ubuntu ARM64"
+
+ARG USERNAME=portato
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} ${USERNAME} && \
+    useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USERNAME}
+
+WORKDIR /opt/portato
+COPY . /opt/portato
+
+RUN python3 -m venv /opt/venv && \
+    /opt/venv/bin/pip install --upgrade pip wheel setuptools && \
+    (/opt/venv/bin/pip install -e . || true)
+
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:${PATH}"
+
+RUN printf '%s\n' '#!/usr/bin/env bash' \
+    'echo "Mock emerge command - this container needs Gentoo tools for full functionality"' \
+    'echo "Usage: mount your Gentoo /etc/portage and /usr/portage directories"' \
+    'exit 1' \
+    > /usr/local/bin/emerge && chmod +x /usr/local/bin/emerge
+
+RUN printf '%s\n' '#!/usr/bin/env bash' \
+    'set -e' \
+    'if python3 -c "import portato" >/dev/null 2>&1; then' \
+    '  exec python3 -m portato "$@"' \
+    'elif [ -f /opt/portato/portato/gui.py ]; then' \
+    '  exec python3 - <<PY "$@"' \
+    'from portato.gui import run_gui' \
+    'import sys' \
+    'if __name__ == "__main__":' \
+    '    if len(sys.argv) > 1 and sys.argv[1] == "gui":' \
+    '        sys.argv.pop(1)' \
+    '    run_gui()' \
+    'PY' \
+    'elif [ -f /opt/portato/gui.py ]; then' \
+    '  exec python3 /opt/portato/gui.py "$@"' \
+    'else' \
+    '  echo "ERROR: Cannot find Portato entrypoint (portato package or gui.py)." >&2' \
+    '  exit 1' \
+    'fi' \
+    > /usr/local/bin/portato && chmod +x /usr/local/bin/portato
+
+COPY docker/headless.sh /usr/local/bin/headless.sh
+RUN chmod +x /usr/local/bin/headless.sh
+
+USER ${USERNAME}
+CMD ["portato", "--help"]
