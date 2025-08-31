@@ -20,7 +20,8 @@ So first grab the Stage 3 as per usual pick the closest mirror:
 
 Thing to note, that altering USE flags in Gentoo frequently precipitates the inclusion of supplementary dependencies and necessitates subsequent package recompilations. On occasion, one must also reconcile antagonistic flags and dependency conflicts. Nevertheless, the process is less formidable than it may initially appear, as Gentoo furnishes predefined Portage profiles that establish canonical defaults for both global and per-package USE flags.
 
-<img width="662" height="173" alt="image" src="https://github.com/user-attachments/assets/21f51cb0-8eb0-4278-8096-7d8bad8aa035" />
+<img width="1536" height="1024" alt="gentooterm" src="https://github.com/user-attachments/assets/5ec5da15-c8a9-41a1-98d6-b4dda3286a28" />
+
 
 ## Rolling but no bleeding
 
