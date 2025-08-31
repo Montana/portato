@@ -4,15 +4,27 @@
 Portato is a GUI for the package manager of Gentoo - Portage. Shoutout to @Necoro, the original creator of Portato.
 Original depracated project: https://necoro.dev/portato/.
 
+<img width="544" height="559" alt="Screenshot 2025-08-29 at 5 27 26 AM" src="https://github.com/user-attachments/assets/72b8016a-4812-4d21-9025-d9e443dd4deb" />
+
 NB: _Current instructions are only good for when this version (v2022) is done and ready for deployment_.
 
 ## Why? 
 
 The original author of Portato, @Necoro aka René Neumann, has stated "Portato does not work with current versions of portage. Hence I asked to remove it from Gentoo. I do not know, if I will ever make it work again. So please step up if you are interested in getting it running again." So I thought I'd be the person to get the new version of Portato going.
 
-Currently there's no plans of the original developer to bring it back on it's own. So I'm doing it. 
+As far as I know and have been informed, currently there's no plans of the original developer to bring it back on it's own. So I'm doing it. 
 
-<img width="544" height="559" alt="Screenshot 2025-08-29 at 5 27 26 AM" src="https://github.com/user-attachments/assets/72b8016a-4812-4d21-9025-d9e443dd4deb" />
+So first grab the Stage 3 as per usual pick the closest mirror: 
+
+<img width="1259" height="500" alt="image" src="https://github.com/user-attachments/assets/81ad5c9a-6004-409a-873b-5cefbacb2b99" />
+
+Thing to note, that altering USE flags in Gentoo frequently precipitates the inclusion of supplementary dependencies and necessitates subsequent package recompilations. On occasion, one must also reconcile antagonistic flags and dependency conflicts. Nevertheless, the process is less formidable than it may initially appear, as Gentoo furnishes predefined Portage profiles that establish canonical defaults for both global and per-package USE flags.
+
+<img width="662" height="173" alt="image" src="https://github.com/user-attachments/assets/21f51cb0-8eb0-4278-8096-7d8bad8aa035" />
+
+## Rolling but no bleeding
+
+Gentoo is a rolling distribution that priorities proven and stable software. If you’re looking for a rolling “bleeding edge” distribution you’re better suited with Arch or Void Linux.
 
 I've built a tiny, modernized **CLI** placeholder for the old Portato GUI that lets you:
 - show `emerge --info`
@@ -20,9 +32,7 @@ I've built a tiny, modernized **CLI** placeholder for the old Portato GUI that l
 - list the world set
 - install/remove packages (shells out to `emerge`)
 
-This is **not** the full GTK GUI — it’s a stopgap that runs on Python 3 and current Gentoo,
-so you have *something usable today*. It’s structured so the GUI can be added back later
-(ideally via PyGObject/GTK3+).
+This is **not** the full GTK GUI — it’s a stopgap that runs on Python 3 and current Gentoo, so you have *something usable today*. It’s structured so the GUI can be added back later (ideally via PyGObject/GTK3+).
 
 ## Quick install (pip)
 
